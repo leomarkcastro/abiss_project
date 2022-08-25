@@ -1,60 +1,139 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
+import React, { useEffect } from "react";
+import { GetServerSideProps } from "next";
+import prisma from "@/lib/prisma";
+import Link from "next/link";
+import { formatDate } from "@/lib/utils";
 
-export const getStaticProps: GetStaticProps = async () => {
-  const feed = [
-    {
-      id: "1",
-      title: "Prisma is the perfect ORM for Next.js",
-      content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-      published: false,
-      author: {
-        name: "Nikolas Burk",
-        email: "burk@prisma.io",
-      },
-    },
-  ]
-  return { 
-    props: { feed }, 
-    revalidate: 10 
+// export const getServerSideProps: GetServerSideProps = async () => {};
+
+const Page = (props) => {
+  const [abiList, setAbiList] = React.useState([]);
+  const [conList, setConList] = React.useState([]);
+  const [progList, setProgList] = React.useState([]);
+
+  async function abiData() {
+    const abi = await fetch("/api/db/abi");
+    const abiList = await abi.json();
+    setAbiList(abiList);
+    const con = await fetch("/api/db/contract");
+    const conList = await con.json();
+    setConList(conList);
+    const prog = await fetch("/api/db/program");
+    const progList = await prog.json();
+    setProgList(progList);
   }
-}
 
-type Props = {
-  feed: PostProps[]
-}
+  useEffect(() => {
+    abiData();
+  }, []);
 
-const Blog: React.FC<Props> = (props) => {
   return (
-    <Layout>
-      <div className="page">
-        <h1>Public Feed</h1>
-        <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
+    <main className="my-4 py-8">
+      <div className="pb-4 border-b-2">
+        <h1 className="text-3xl text-center">Welcome to the</h1>
+        <h1 className="text-6xl text-center">
+          X<span className="animate-ping">_</span>ABI
+        </h1>
       </div>
-      <style jsx>{`
-        .post {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
+      <div className="flex gap-2 items-start relative">
+        <div className="flex-[2] flex flex-col gap-2 p-1">
+          <div className="flex flex-col gap-2 p-1">
+            <p className="text-3xl">Programs</p>
+            {progList.map((prog) => {
+              return (
+                <div
+                  key={prog.id}
+                  className="border shadow-md rounded-md p-3 flex"
+                >
+                  <div className="flex-1">
+                    <p className="text-xl ">{prog.name}</p>
+                    <p>Uploaded on: {formatDate(prog.createdAt)}</p>
+                  </div>
+                  <div className="flex-1 flex flex-col items-end">
+                    <Link
+                      href={`/program/${prog.id}`}
+                      as={`/program/${prog.id}`}
+                    >
+                      <a className="text-blue-700">View</a>
+                    </Link>
+                    <button className="text-blue-700">Get ABI Link</button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex flex-col gap-2 p-1">
+            <p className="text-3xl">Contracts</p>
+            {conList.map((con) => {
+              return (
+                <div
+                  key={con.id}
+                  className="border shadow-md rounded-md p-3 flex"
+                >
+                  <div className="flex-1">
+                    <p className="text-xl ">{con.name}</p>
+                    <p>Uploaded on: {formatDate(con.createdAt)}</p>
+                  </div>
+                  <div className="flex-1 flex flex-col items-end">
+                    <Link
+                      href={`/contract/${con.id}`}
+                      as={`/contract/${con.id}`}
+                    >
+                      <a className="text-blue-700">View</a>
+                    </Link>
+                    <button className="text-blue-700">Get ABI Link</button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div className="flex flex-col gap-2 p-1">
+            <p className="text-3xl">ABIs</p>
+            {abiList.map((abi) => {
+              return (
+                <div
+                  key={abi.id}
+                  className="border shadow-md rounded-md p-3 flex"
+                >
+                  <div className="flex-1">
+                    <p className="text-xl ">{abi.name}</p>
+                    <p>Uploaded on: {formatDate(abi.createdAt)}</p>
+                  </div>
+                  <div className="flex-1 flex flex-col items-end">
+                    <Link href={`/abi/${abi.id}`} as={`/abi/${abi.id}`}>
+                      <a className="text-blue-700">View</a>
+                    </Link>
+                    <button className="text-blue-700">Get ABI Link</button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="flex-1 p-3 text-right flex flex-col items-center m-1 sticky top-16">
+          <Link href="/create/abi">
+            <a>
+              <button className="text-blue-700 p-1">Create A New ABI</button>
+            </a>
+          </Link>
+          <Link href="/create/contract">
+            <a>
+              <button className="text-blue-700 p-1">
+                Create A New Contract
+              </button>
+            </a>
+          </Link>
+          <Link href="/create/program">
+            <a>
+              <button className="text-blue-700 p-1">
+                Create A New Program
+              </button>
+            </a>
+          </Link>
+        </div>
+      </div>
+    </main>
+  );
+};
 
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
-  )
-}
-
-export default Blog
+export default Page;

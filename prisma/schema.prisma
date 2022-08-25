@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int        @id() @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  email       String     @unique
+  name        String
+  password    String?
+  type        Int?
+  abiUploaded Abi[]
+  Contract    Contract[]
+  Program     Program[]
+}
+
+model Abi {
+  id            Int        @id() @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  name          String
+  abi           String
+  contractUsers Contract[]
+  User          User?      @relation(fields: [userId], references: [id])
+  userId        Int?
+}
+
+model Network {
+  id        Int        @id
+  createdAt DateTime   @default(now())
+  name      String     @unique
+  contracts Contract[]
+}
+
+model Contract {
+  id        String    @id
+  createdAt DateTime  @default(now())
+  name      String    @unique
+  abi       Abi?      @relation(fields: [abiID], references: [id])
+  abiID     Int?
+  network   Network?  @relation(fields: [networkID], references: [id])
+  networkID Int?
+  Program   Program[]
+  User      User?     @relation(fields: [userId], references: [id])
+  userId    Int?
+}
+
+model Program {
+  id         Int       @id() @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  key        String    @unique
+  name       String    @unique
+  contract   Contract? @relation(fields: [contractId], references: [id])
+  contractId String?
+  User       User?     @relation(fields: [userId], references: [id])
+  userId     Int?
+}
