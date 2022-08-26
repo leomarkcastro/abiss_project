@@ -1,0 +1,15 @@
+{
+  "apps": [
+    {
+      "name": "xabi-cluster",
+      "script": "run.js",
+      "instances": 3,
+      "exec_mode": "cluster_mode",
+      "cwd": "/root/xabi/abiss_project",
+      "env": {
+        "PORT": 3000,
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}
