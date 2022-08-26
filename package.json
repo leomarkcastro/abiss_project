@@ -5,13 +5,15 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "pm2": "pm2"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^4.1.1",
+    "async": "^3.2.4",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "next": "12.0.10",
