@@ -50,8 +50,6 @@ export default async function handle(req, res) {
   const method = req.method;
   const session = await unstable_getServerSession(req, res, authOptions);
 
-  // console.log(method, crudCommands, session);
-
   res.setHeader("Cache-Control", "s-maxage=180");
 
   const object = crudCommands[0];
