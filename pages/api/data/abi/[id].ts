@@ -6,5 +6,6 @@ export default async (req, res) => {
       id: Number(req.query.id),
     },
   });
+  res.setHeader("Cache-Control", "s-maxage=180");
   return res.json(data);
 };

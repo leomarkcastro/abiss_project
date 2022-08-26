@@ -52,6 +52,8 @@ export default async function handle(req, res) {
 
   // console.log(method, crudCommands, session);
 
+  res.setHeader("Cache-Control", "s-maxage=180");
+
   const object = crudCommands[0];
   const id = crudCommands[1];
 

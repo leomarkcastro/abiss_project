@@ -14,5 +14,6 @@ export default async (req, res) => {
       },
     },
   });
+  res.setHeader("Cache-Control", "s-maxage=180");
   return res.send(data);
 };
