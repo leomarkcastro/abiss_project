@@ -30,7 +30,6 @@ const Page = (props) => {
   return (
     <main className="my-4 py-8">
       <div className="pb-4 border-b-2">
-        <h1 className="text-3xl text-center">Welcome to the</h1>
         <h1 className="text-6xl text-center">
           X<span className="animate-ping">_</span>ABI
         </h1>
