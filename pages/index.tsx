@@ -31,7 +31,7 @@ const Page = (props) => {
     <main className="my-4 py-8">
       <div className="pb-4 border-b-2">
         <h1 className="text-6xl text-center">
-          X<span className="animate-ping">_</span>ABI
+          X<span className="animate-ping text-red-600">_</span>ABI
         </h1>
       </div>
       <div className="flex gap-2 items-start relative">
