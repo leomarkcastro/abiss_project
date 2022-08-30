@@ -86,7 +86,7 @@ export function Table({
           ))}
         </tfoot>
       </table>
-      <div className="flex items-center gap-2 justify-center transform scale-75">
+      <div className="flex flex-wrap items-center gap-2 justify-center transform scale-75">
         <button
           className="border rounded p-1"
           onClick={() => table.setPageIndex(0)}

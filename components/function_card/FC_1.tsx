@@ -22,7 +22,7 @@ export default function FunctionCard({
   return (
     <div className="flex-1 flex flex-col gap-2 my-2 border shadow-lg p-4 rounded-md">
       <p className="text-2xl font-bold">Functions</p>
-      <div className="flex gap-2">
+      <div className="flex flex-col md:flex-row gap-2">
         <div className="flex-1 flex flex-col gap-1 max-h-[70vh] overflow-auto mt-9">
           <input
             className="border p-1"

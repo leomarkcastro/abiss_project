@@ -8,7 +8,7 @@ export default function Navbar() {
   const session = useSession();
 
   return (
-    <div className="flex px-3 sticky top-0 z-10">
+    <div className="flex px-0 md:px-3 sticky top-0 z-10">
       <div className="flex-1 bg-white flex rounded-lg rounded-tl-none rounded-tr-none border shadow-md p-3">
         <div className="flex-1 flex gap-2 items-center">
           <p className="font-bold">X_ABI</p>

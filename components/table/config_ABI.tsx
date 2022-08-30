@@ -12,24 +12,26 @@ const columnHelper = createColumnHelper<abiType>();
 
 export const abiColumns = [
   columnHelper.accessor("id", {
-    cell: (info) => <p>{info.getValue()}</p>,
-    header: () => <span>ID</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">ID</span>,
   }),
   columnHelper.accessor("name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Name</span>,
   }),
   columnHelper.accessor("createdAt", {
-    cell: (info) => <p>{formatDate(info.getValue())}</p>,
-    header: () => <span>Created At</span>,
+    cell: (info) => (
+      <p className="hidden md:block">{formatDate(info.getValue())}</p>
+    ),
+    header: () => <span className="hidden md:block">Created At</span>,
   }),
   columnHelper.accessor("Contracts", {
-    cell: (info) => <p>{info.getValue().length}</p>,
-    header: () => <span>Contracts</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue().length}</p>,
+    header: () => <span className="hidden md:block">Contracts</span>,
   }),
   columnHelper.accessor("Owner.name", {
-    cell: (info) => <p>{info.getValue()}</p>,
-    header: () => <span>Author</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">Author</span>,
   }),
   columnHelper.accessor("id", {
     cell: (info) => (
@@ -42,7 +44,7 @@ export const abiColumns = [
             copyToClipboard(
               `${window.location.origin}/api/data/abi/${info.getValue()}`
             );
-            alert("Successfully copied to clipboard");
+            // alert("Successfully copied to clipboard");
           }}
           className="hover:text-blue-500"
         >

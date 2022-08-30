@@ -32,7 +32,7 @@ export default function SimulateCard({
         {command.name}
         <span className="text-sm ml-auto">{command.stateMutability}</span>
       </p>
-      <form className="flex gap-1" onSubmit={onSubmitFx}>
+      <form className="flex flex-col md:flex-row gap-1" onSubmit={onSubmitFx}>
         <div className="flex-[2]">
           {command.inputs.map((input_data, i) => {
             return (

@@ -15,28 +15,30 @@ const columnHelper = createColumnHelper<programType>();
 
 export const programColumns = [
   columnHelper.accessor("key", {
-    cell: (info) => <p>{info.getValue()}</p>,
-    header: () => <span>Access Key</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">Access Key</span>,
   }),
   columnHelper.accessor("name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Name</span>,
   }),
   columnHelper.accessor("id", {
-    cell: (info) => <p>{info.getValue()}</p>,
-    header: () => <span>ID</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">ID</span>,
   }),
   columnHelper.accessor("createdAt", {
-    cell: (info) => <p>{formatDate(info.getValue())}</p>,
-    header: () => <span>Created At</span>,
+    cell: (info) => (
+      <p className="hidden md:block">{formatDate(info.getValue())}</p>
+    ),
+    header: () => <span className="hidden md:block">Created At</span>,
   }),
   columnHelper.accessor("Contract.name", {
-    cell: (info) => <p>{info.getValue()}</p>,
-    header: () => <span>Contract Linked</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">Contract Linked</span>,
   }),
   columnHelper.accessor("Owner.name", {
-    cell: (info) => <p>{info.getValue()}</p>,
-    header: () => <span>Author</span>,
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">Author</span>,
   }),
   columnHelper.accessor("id", {
     cell: (info) => (
@@ -51,7 +53,7 @@ export const programColumns = [
                 window.location.origin
               }/api/data/program/bykey/${info.row.getValue("key")}`
             );
-            alert("Successfully copied to clipboard");
+            // alert("Successfully copied to clipboard");
           }}
           className="hover:text-blue-500"
         >

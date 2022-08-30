@@ -100,7 +100,7 @@ const Page = (props) => {
           X<span className="animate-ping text-red-600">_</span>ABI
         </h1>
       </div>
-      <div className="flex gap-2 items-start relative">
+      <div className="flex flex-col-reverse md:flex-row gap-2 items-start relative">
         <div className="flex-[4] flex flex-col gap-2 p-1">
           <p className="text-3xl">Programs</p>
           <Table
@@ -117,7 +117,7 @@ const Page = (props) => {
           <p className="text-3xl">ABIs</p>
           <Table data={abiList} columns={abiColumns} refetchData={reloadABI} />
         </div>
-        <div className="flex-1 p-3 text-right flex flex-col items-center m-1 sticky top-16 border shadow-md bg-gray-200">
+        <div className="flex-1 w-full p-3 text-right flex flex-col items-center m-1 relative md:sticky top-16 border shadow-md bg-gray-200">
           <Link href="/create/abi">
             <a>
               <button className="text-blue-700 p-1">Create A New ABI</button>
