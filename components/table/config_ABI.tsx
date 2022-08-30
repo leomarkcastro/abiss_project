@@ -4,7 +4,7 @@ import { copyToClipboard, formatDate } from "@/lib/utils";
 import Link from "next/link";
 
 const abiExtended = Prisma.validator<Prisma.AbiArgs>()({
-  include: { contractUsers: true, User: true },
+  include: { Contracts: true, Owner: true },
 });
 export type abiType = Prisma.AbiGetPayload<typeof abiExtended>;
 
@@ -23,11 +23,11 @@ export const abiColumns = [
     cell: (info) => <p>{formatDate(info.getValue())}</p>,
     header: () => <span>Created At</span>,
   }),
-  columnHelper.accessor("contractUsers", {
+  columnHelper.accessor("Contracts", {
     cell: (info) => <p>{info.getValue().length}</p>,
     header: () => <span>Contracts</span>,
   }),
-  columnHelper.accessor("User.name", {
+  columnHelper.accessor("Owner.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Author</span>,
   }),

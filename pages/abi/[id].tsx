@@ -16,7 +16,7 @@ const querySelectABI = (id: string) => {
       id: Number(id),
     },
     include: {
-      contractUsers: true,
+      Contracts: true,
     },
   };
   return encodeURI(JSON.stringify(query));
@@ -75,7 +75,7 @@ const Page = (props) => {
           </p>
           <p>
             <strong>Contracts using this:</strong>{" "}
-            {ABIData["contractUsers"]?.length}
+            {ABIData["Contracts"]?.length}
           </p>
           <p className="max-h-[20vh] overflow-auto bg-gray-100 p-3">
             {ABIData["abi"]}
@@ -84,7 +84,7 @@ const Page = (props) => {
         <div className="flex-1 flex flex-col gap-1 my-2 border shadow-lg p-4 rounded-md">
           <p className="text-2xl font-bold">Contract Users</p>
           <div className="p-4">
-            {ABIData["contractUsers"]?.map((con, ci) => {
+            {ABIData["Contracts"]?.map((con, ci) => {
               return (
                 <Link href={`/contract/${con.id}`}>
                   <a>

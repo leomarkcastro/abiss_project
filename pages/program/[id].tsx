@@ -16,10 +16,10 @@ const querySelectProgram = (id: number) => {
       id: Number(id),
     },
     include: {
-      contract: {
+      Contract: {
         include: {
-          abi: true,
-          network: true,
+          Abi: true,
+          Network: true,
         },
       },
     },
@@ -48,12 +48,12 @@ const Page = (props) => {
     );
     const abiData = await program.json();
     console.log(abiData);
-    setABIData(abiData.contract.abi);
-    loadDetectedCommands(abiData.contract.abi.abi, setCommandList);
+    setABIData(abiData.Contract.Abi);
+    loadDetectedCommands(abiData.Contract.Abi.abi, setCommandList);
     setProgramData(abiData);
-    setContractData(abiData.contract);
-    console.log(abiData.contract);
-    setContractAddress(abiData.contract.id);
+    setContractData(abiData.Contract);
+    console.log(abiData.Contract);
+    setContractAddress(abiData.Contract.id);
     setConnected(true);
   }
 
@@ -105,9 +105,8 @@ const Page = (props) => {
             <strong>Created At:</strong> {formatDate(ABIData["createdAt"])}
           </p>
           <p>
-            <strong>Network:</strong> {contractData["network"]?.name} (Chain ID
-            -&gt;
-            {" " + contractData["network"]?.id})
+            <strong>Network:</strong> {contractData["Network"]?.name} (Chain ID
+            :{" " + contractData["Network"]?.id})
           </p>
           <p className="max-h-[20vh] overflow-auto bg-gray-100 p-3">
             {ABIData["abi"]}

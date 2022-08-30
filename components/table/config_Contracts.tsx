@@ -5,10 +5,10 @@ import Link from "next/link";
 
 const contractExtended = Prisma.validator<Prisma.ContractArgs>()({
   include: {
-    abi: true,
-    network: true,
-    Program: true,
-    User: true,
+    Abi: true,
+    Network: true,
+    Owner: true,
+    Programs: true,
   },
 });
 export type contractType = Prisma.ContractGetPayload<typeof contractExtended>;
@@ -28,11 +28,11 @@ export const contractColumns = [
     cell: (info) => <p>{formatDate(info.getValue())}</p>,
     header: () => <span>Created At</span>,
   }),
-  columnHelper.accessor("abi.name", {
+  columnHelper.accessor("Abi.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>ABI Source</span>,
   }),
-  columnHelper.accessor("User.name", {
+  columnHelper.accessor("Owner.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Author</span>,
   }),

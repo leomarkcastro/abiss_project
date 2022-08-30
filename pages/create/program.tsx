@@ -12,7 +12,7 @@ const createProgram = (name: string, key: string, contract: string) => {
   return Prisma.validator<Prisma.ProgramCreateInput>()({
     name,
     key,
-    contract: { connect: { id: contract } },
+    Contract: { connect: { id: contract } },
     // User: { connect: { id: userId } },
   });
 };

@@ -16,8 +16,8 @@ const querySelectContract = (id: string) => {
       id: id,
     },
     include: {
-      abi: true,
-      network: true,
+      Abi: true,
+      Network: true,
     },
   };
   return encodeURI(JSON.stringify(query));
@@ -42,8 +42,8 @@ const Page = (props) => {
       `/api/db/contract/${id}?q=${querySelectContract(id)}`
     );
     const abiData = await abi.json();
-    setABIData(abiData.abi);
-    loadDetectedCommands(abiData.abi.abi, setCommandList);
+    setABIData(abiData.Abi);
+    loadDetectedCommands(abiData.Abi.abi, setCommandList);
     setContractData(abiData);
     console.log(abiData);
     setContractAddress(abiData.id);
@@ -86,9 +86,9 @@ const Page = (props) => {
             <strong>Created At:</strong> {formatDate(ABIData["createdAt"])}
           </p>
           <p>
-            <strong>Network:</strong> {contractData["network"]?.name} (Chain ID
+            <strong>Network:</strong> {contractData["Network"]?.name} (Chain ID
             -&gt;
-            {" " + contractData["network"]?.id})
+            {" " + contractData["Network"]?.id})
           </p>
           <p className="max-h-[20vh] overflow-auto bg-gray-100 p-3">
             {ABIData["abi"]}

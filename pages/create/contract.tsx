@@ -17,8 +17,8 @@ const createContract = (
   return Prisma.validator<Prisma.ContractCreateInput>()({
     id: encodeURI(address.replace(" ", "_")),
     name,
-    abi: { connect: { id: Number(abi) } },
-    network: { connect: { id: Number(network) } },
+    Abi: { connect: { id: Number(abi) } },
+    Network: { connect: { id: Number(network) } },
     // User: { connect: { id: userId } },
   });
 };

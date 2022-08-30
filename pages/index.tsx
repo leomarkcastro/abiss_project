@@ -10,8 +10,8 @@ import { programColumns } from "@/components/table/config_Program";
 const querySelectABI = (range = [0, 3]) => {
   const query: Prisma.AbiFindManyArgs = {
     include: {
-      contractUsers: true,
-      User: true,
+      Contracts: true,
+      Owner: true,
     },
     skip: range[0],
     take: range[1] - range[0],
@@ -25,10 +25,10 @@ const querySelectABI = (range = [0, 3]) => {
 const querySelectContract = (range = [0, 500]) => {
   const query: Prisma.ContractFindManyArgs = {
     include: {
-      abi: true,
-      network: true,
-      Program: true,
-      User: true,
+      Abi: true,
+      Network: true,
+      Programs: true,
+      Owner: true,
     },
     skip: range[0],
     take: range[1] - range[0],
@@ -42,8 +42,8 @@ const querySelectContract = (range = [0, 500]) => {
 const querySelectProgram = (range = [0, 500]) => {
   const query: Prisma.ProgramFindManyArgs = {
     include: {
-      contract: true,
-      User: true,
+      Contract: true,
+      Owner: true,
     },
     skip: range[0],
     take: range[1] - range[0],

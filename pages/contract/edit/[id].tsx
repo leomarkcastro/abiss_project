@@ -17,8 +17,8 @@ const updateContract = (
   return Prisma.validator<Prisma.ContractUpdateInput>()({
     id: address,
     name,
-    abi: { connect: { id: Number(abi) } },
-    network: { connect: { id: Number(network) } },
+    Abi: { connect: { id: Number(abi) } },
+    Network: { connect: { id: Number(network) } },
     // User: { connect: { id: userId } },
   });
 };
@@ -29,8 +29,8 @@ const querySelectContract = (id: string) => {
       id: id,
     },
     include: {
-      abi: true,
-      network: true,
+      Abi: true,
+      Network: true,
     },
   };
   return encodeURI(JSON.stringify(query));
@@ -60,8 +60,8 @@ const Page = (props) => {
     const abiData = await abi.json();
     setAddress(abiData["id"]);
     setName(abiData["name"]);
-    setAbi(abiData["abi"]["id"]);
-    setNetwork(abiData["network"]["id"]);
+    setAbi(abiData["Abi"]["id"]);
+    setNetwork(abiData["Network"]["id"]);
   }
 
   const [networkList, setNetworkList] = useState([]);

@@ -6,8 +6,8 @@ export default async (req, res) => {
       id: req.query.id,
     },
     include: {
-      abi: true,
-      network: true,
+      Abi: true,
+      Network: true,
     },
   });
   res.setHeader("Cache-Control", "s-maxage=180");

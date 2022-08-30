@@ -12,7 +12,7 @@ const updateContract = (name: string, key: string, contract: string) => {
   return Prisma.validator<Prisma.ProgramUpdateInput>()({
     name,
     key,
-    contract: { connect: { id: contract } },
+    Contract: { connect: { id: contract } },
     // User: { connect: { id: userId } },
   });
 };
@@ -23,7 +23,7 @@ const querySelectProgram = (id: any) => {
       id: Number(id),
     },
     include: {
-      contract: true,
+      Contract: true,
     },
   };
   return encodeURI(JSON.stringify(query));
@@ -52,7 +52,7 @@ const Page = (props) => {
     const abiData = await abi.json();
     setName(abiData["name"]);
     setKey(abiData["key"]);
-    setContract(abiData["contract"]["id"]);
+    setContract(abiData["Contract"]["id"]);
   }
 
   const [contractList, setContractList] = useState([]);
@@ -79,7 +79,7 @@ const Page = (props) => {
               e.preventDefault();
               const name = e.target["name"].value;
               const key = e.target["key"].value;
-              const contract = e.target["contract"].value;
+              const contract = e.target["Contract"].value;
               const contractData = updateContract(name, key, contract);
               try {
                 const resp = await fetch(`/api/db/program/${id}`, {

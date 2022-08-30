@@ -87,7 +87,7 @@ export default async function handle(req, res) {
       const result = await prisma[object].create({
         data: {
           ...req.body,
-          User: {
+          Owner: {
             connectOrCreate: {
               create: {
                 email: session.user.email,

@@ -5,8 +5,8 @@ import Link from "next/link";
 
 const programExtended = Prisma.validator<Prisma.ProgramArgs>()({
   include: {
-    contract: true,
-    User: true,
+    Contract: true,
+    Owner: true,
   },
 });
 export type programType = Prisma.ProgramGetPayload<typeof programExtended>;
@@ -30,11 +30,11 @@ export const programColumns = [
     cell: (info) => <p>{formatDate(info.getValue())}</p>,
     header: () => <span>Created At</span>,
   }),
-  columnHelper.accessor("contract.name", {
+  columnHelper.accessor("Contract.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Contract Linked</span>,
   }),
-  columnHelper.accessor("User.name", {
+  columnHelper.accessor("Owner.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Author</span>,
   }),

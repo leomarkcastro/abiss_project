@@ -6,10 +6,10 @@ export default async (req, res) => {
       key: req.query.id,
     },
     include: {
-      contract: {
+      Contract: {
         include: {
-          abi: true,
-          network: true,
+          Abi: true,
+          Network: true,
         },
       },
     },
