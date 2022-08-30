@@ -60,3 +60,8 @@ export function shortenify(str) {
   const len = str.length;
   return str.substring(0, 5) + "..." + str.substring(len - 5);
 }
+
+export function copyToClipboard(str) {
+  /* Copy the text inside the text field */
+  navigator.clipboard.writeText(str);
+}

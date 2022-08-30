@@ -1,26 +1,91 @@
-import React, { useEffect } from "react";
-import { GetServerSideProps } from "next";
-import prisma from "@/lib/prisma";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
 
-// export const getServerSideProps: GetServerSideProps = async () => {};
+import { Prisma } from "@prisma/client";
+import { Table } from "@/components/table/BasicLayout";
+import { abiColumns } from "@/components/table/config_ABI";
+import { contractColumns } from "@/components/table/config_Contracts";
+import { programColumns } from "@/components/table/config_Program";
+
+const querySelectABI = (range = [0, 3]) => {
+  const query: Prisma.AbiFindManyArgs = {
+    include: {
+      contractUsers: true,
+      User: true,
+    },
+    skip: range[0],
+    take: range[1] - range[0],
+    orderBy: {
+      createdAt: "desc",
+    },
+  };
+  return encodeURI(JSON.stringify(query));
+};
+
+const querySelectContract = (range = [0, 500]) => {
+  const query: Prisma.ContractFindManyArgs = {
+    include: {
+      abi: true,
+      network: true,
+      Program: true,
+      User: true,
+    },
+    skip: range[0],
+    take: range[1] - range[0],
+    orderBy: {
+      createdAt: "desc",
+    },
+  };
+  return encodeURI(JSON.stringify(query));
+};
+
+const querySelectProgram = (range = [0, 500]) => {
+  const query: Prisma.ProgramFindManyArgs = {
+    include: {
+      contract: true,
+      User: true,
+    },
+    skip: range[0],
+    take: range[1] - range[0],
+    orderBy: {
+      createdAt: "desc",
+    },
+  };
+  return encodeURI(JSON.stringify(query));
+};
 
 const Page = (props) => {
-  const [abiList, setAbiList] = React.useState([]);
-  const [conList, setConList] = React.useState([]);
-  const [progList, setProgList] = React.useState([]);
+  const [abiList, setAbiList] = useState([]);
+  const [conList, setConList] = useState([]);
+  const [progList, setProgList] = useState([]);
 
-  async function abiData() {
-    const abi = await fetch("/api/db/abi");
+  async function reloadABI(start, size = 500) {
+    const abi = await fetch(
+      `/api/db/abi?q=${querySelectABI([start, start + size])}`
+    );
     const abiList = await abi.json();
+    console.log([start, start + size]);
     setAbiList(abiList);
-    const con = await fetch("/api/db/contract");
+  }
+  async function reloadContract(start, size = 500) {
+    const con = await fetch(
+      `/api/db/contract?q=${querySelectContract([start, start + size])}`
+    );
     const conList = await con.json();
     setConList(conList);
-    const prog = await fetch("/api/db/program");
+  }
+  async function reloadProgram(start, size = 500) {
+    const prog = await fetch(
+      `/api/db/program?q=${querySelectProgram([start, start + size])}`
+    );
     const progList = await prog.json();
     setProgList(progList);
+  }
+
+  async function abiData() {
+    reloadABI(0);
+    reloadContract(0);
+    reloadProgram(0);
   }
 
   useEffect(() => {
@@ -36,81 +101,23 @@ const Page = (props) => {
         </h1>
       </div>
       <div className="flex gap-2 items-start relative">
-        <div className="flex-[2] flex flex-col gap-2 p-1">
-          <div className="flex flex-col gap-2 p-1">
-            <p className="text-3xl">Programs</p>
-            {progList.map((prog) => {
-              return (
-                <div
-                  key={prog.id}
-                  className="border shadow-md rounded-md p-3 flex"
-                >
-                  <div className="flex-1">
-                    <p className="text-xl ">{prog.name}</p>
-                    <p>Uploaded on: {formatDate(prog.createdAt)}</p>
-                  </div>
-                  <div className="flex-1 flex flex-col items-end">
-                    <Link
-                      href={`/program/${prog.id}`}
-                      as={`/program/${prog.id}`}
-                    >
-                      <a className="text-blue-700">View</a>
-                    </Link>
-                    <button className="text-blue-700">Get ABI Link</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex flex-col gap-2 p-1">
-            <p className="text-3xl">Contracts</p>
-            {conList.map((con) => {
-              return (
-                <div
-                  key={con.id}
-                  className="border shadow-md rounded-md p-3 flex"
-                >
-                  <div className="flex-1">
-                    <p className="text-xl ">{con.name}</p>
-                    <p>Uploaded on: {formatDate(con.createdAt)}</p>
-                  </div>
-                  <div className="flex-1 flex flex-col items-end">
-                    <Link
-                      href={`/contract/${con.id}`}
-                      as={`/contract/${con.id}`}
-                    >
-                      <a className="text-blue-700">View</a>
-                    </Link>
-                    <button className="text-blue-700">Get ABI Link</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div className="flex flex-col gap-2 p-1">
-            <p className="text-3xl">ABIs</p>
-            {abiList.map((abi) => {
-              return (
-                <div
-                  key={abi.id}
-                  className="border shadow-md rounded-md p-3 flex"
-                >
-                  <div className="flex-1">
-                    <p className="text-xl ">{abi.name}</p>
-                    <p>Uploaded on: {formatDate(abi.createdAt)}</p>
-                  </div>
-                  <div className="flex-1 flex flex-col items-end">
-                    <Link href={`/abi/${abi.id}`} as={`/abi/${abi.id}`}>
-                      <a className="text-blue-700">View</a>
-                    </Link>
-                    <button className="text-blue-700">Get ABI Link</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        <div className="flex-[4] flex flex-col gap-2 p-1">
+          <p className="text-3xl">Programs</p>
+          <Table
+            data={progList}
+            columns={programColumns}
+            refetchData={reloadProgram}
+          />
+          <p className="text-3xl">Contracts</p>
+          <Table
+            data={conList}
+            columns={contractColumns}
+            refetchData={reloadContract}
+          />
+          <p className="text-3xl">ABIs</p>
+          <Table data={abiList} columns={abiColumns} refetchData={reloadABI} />
         </div>
-        <div className="flex-1 p-3 text-right flex flex-col items-center m-1 sticky top-16">
+        <div className="flex-1 p-3 text-right flex flex-col items-center m-1 sticky top-16 border shadow-md bg-gray-200">
           <Link href="/create/abi">
             <a>
               <button className="text-blue-700 p-1">Create A New ABI</button>

@@ -1,6 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Prisma } from "@prisma/client";
-import { formatDate } from "@/lib/utils";
+import { copyToClipboard, formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 const abiExtended = Prisma.validator<Prisma.AbiArgs>()({
   include: { contractUsers: true, User: true },
@@ -24,10 +25,31 @@ export const abiColumns = [
   }),
   columnHelper.accessor("contractUsers", {
     cell: (info) => <p>{info.getValue().length}</p>,
-    header: () => <span>Created At</span>,
+    header: () => <span>Contracts</span>,
   }),
   columnHelper.accessor("User.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Author</span>,
+  }),
+  columnHelper.accessor("id", {
+    cell: (info) => (
+      <div className="flex gap-4 text-sm">
+        <Link href={`/abi/${info.getValue()}`}>
+          <a className="hover:text-blue-500">View</a>
+        </Link>
+        <button
+          onClick={() => {
+            copyToClipboard(
+              `${window.location.origin}/api/data/abi/${info.getValue()}`
+            );
+            alert("Successfully copied to clipboard");
+          }}
+          className="hover:text-blue-500"
+        >
+          Copy Data Link
+        </button>
+      </div>
+    ),
+    header: () => <span className="text-center"></span>,
   }),
 ];

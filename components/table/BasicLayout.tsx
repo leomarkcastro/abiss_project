@@ -24,13 +24,13 @@ export function Table({
     columns: _columns,
     getCoreRowModel: getCoreRowModel(),
     // Pipeline
-    // getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     //
-    // initialState: {
-    //   pagination: {
-    //     pageSize: 10,
-    //   },
-    // },
+    initialState: {
+      pagination: {
+        pageSize: 10,
+      },
+    },
   });
 
   return (
@@ -39,7 +39,7 @@ export function Table({
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
-              className="bg-blue-500 text-white text-left"
+              className="border-b border-blue-500 text-blue-500 text-center"
               key={headerGroup.id}
             >
               {headerGroup.headers.map((header) => (
@@ -58,7 +58,7 @@ export function Table({
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr
-              className=" border-b hover:bg-gray-200 cursor-pointer"
+              className=" border-b hover:bg-gray-100 text-center"
               key={row.id}
             >
               {row.getVisibleCells().map((cell) => (
@@ -86,50 +86,61 @@ export function Table({
           ))}
         </tfoot>
       </table>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 justify-center transform scale-75">
         <button
           className="border rounded p-1"
-          onClick={() => {
-            setCurrentPage(currentPage - 1);
-            refetchData((currentPage - 1) * countPerPage);
-          }}
-          disabled={false}
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {"<<"}
+        </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
         >
           {"<"}
         </button>
         <button
           className="border rounded p-1"
-          onClick={() => {
-            setCurrentPage(currentPage + 1);
-            refetchData((currentPage + 1) * countPerPage);
-          }}
-          disabled={false}
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
         >
           {">"}
         </button>
+        <button
+          className="border rounded p-1"
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          {">>"}
+        </button>
         <span className="flex items-center gap-1">
           <div>Page</div>
-          <strong>{currentPage + 1}</strong>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}
+          </strong>
         </span>
         <span className="flex items-center gap-1">
           | Go to page:
           <input
             type="number"
-            defaultValue={currentPage + 1}
+            defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={(e) => {
               const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              setCurrentPage(page);
+              table.setPageIndex(page);
             }}
             className="border p-1 rounded w-16"
           />
         </span>
         <select
-          value={counterPerPage}
+          value={table.getState().pagination.pageSize}
           onChange={(e) => {
-            setCountPerPage(Number(e.target.value));
+            table.setPageSize(Number(e.target.value));
           }}
         >
-          {[10, 20, 50].map((pageSize) => (
+          {[10, 20, 30, 40, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               Show {pageSize}
             </option>
@@ -139,3 +150,60 @@ export function Table({
     </div>
   );
 }
+
+/*
+function oldNav() {
+  return (
+    <>
+      <button
+        className="border rounded p-1"
+        onClick={() => {
+          setCurrentPage(currentPage - 1);
+          refetchData((currentPage - 1) * countPerPage);
+        }}
+        disabled={false}
+      >
+        {"<"}
+      </button>
+      <button
+        className="border rounded p-1"
+        onClick={() => {
+          setCurrentPage(currentPage + 1);
+          refetchData((currentPage + 1) * countPerPage);
+        }}
+        disabled={false}
+      >
+        {">"}
+      </button>
+      <span className="flex items-center gap-1">
+        <div>Page</div>
+        <strong>{currentPage + 1}</strong>
+      </span>
+      <span className="flex items-center gap-1">
+        | Go to page:
+        <input
+          type="number"
+          defaultValue={currentPage + 1}
+          onChange={(e) => {
+            const page = e.target.value ? Number(e.target.value) - 1 : 0;
+            setCurrentPage(page);
+          }}
+          className="border p-1 rounded w-16"
+        />
+      </span>
+      <select
+        value={counterPerPage}
+        onChange={(e) => {
+          setCountPerPage(Number(e.target.value));
+        }}
+      >
+        {[10, 20, 50].map((pageSize) => (
+          <option key={pageSize} value={pageSize}>
+            Show {pageSize}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+}
+*/

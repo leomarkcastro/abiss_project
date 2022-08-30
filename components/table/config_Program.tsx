@@ -1,6 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Prisma } from "@prisma/client";
-import { formatDate, shortenify } from "@/lib/utils";
+import { copyToClipboard, formatDate, shortenify } from "@/lib/utils";
+import Link from "next/link";
 
 const programExtended = Prisma.validator<Prisma.ProgramArgs>()({
   include: {
@@ -36,5 +37,28 @@ export const programColumns = [
   columnHelper.accessor("User.name", {
     cell: (info) => <p>{info.getValue()}</p>,
     header: () => <span>Author</span>,
+  }),
+  columnHelper.accessor("id", {
+    cell: (info) => (
+      <div className="flex gap-4 text-sm">
+        <Link href={`/program/${info.getValue()}`}>
+          <a className="hover:text-blue-500">View</a>
+        </Link>
+        <button
+          onClick={() => {
+            copyToClipboard(
+              `${
+                window.location.origin
+              }/api/data/program/bykey/${info.row.getValue("key")}`
+            );
+            alert("Successfully copied to clipboard");
+          }}
+          className="hover:text-blue-500"
+        >
+          Copy Data Link
+        </button>
+      </div>
+    ),
+    header: () => <span className="text-center"></span>,
   }),
 ];
