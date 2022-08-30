@@ -54,3 +54,9 @@ export function isJsonString(str) {
   }
   return true;
 }
+
+export function shortenify(str) {
+  if (!str) return "";
+  const len = str.length;
+  return str.substring(0, 5) + "..." + str.substring(len - 5);
+}
