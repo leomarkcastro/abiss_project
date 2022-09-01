@@ -28,7 +28,7 @@ model Abi {
   name      String
   abi       String
   Contracts Contract[]
-  Owner     User?      @relation(fields: [ownerId], references: [id])
+  Owner     User?      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId   Int?
 }
 
@@ -43,12 +43,12 @@ model Contract {
   id        String    @id
   createdAt DateTime  @default(now())
   name      String    @unique
-  Abi       Abi?      @relation(fields: [abiID], references: [id])
+  Abi       Abi?      @relation(fields: [abiID], references: [id], onDelete: Restrict)
   abiID     Int?
-  Network   Network?  @relation(fields: [networkID], references: [id])
+  Network   Network?  @relation(fields: [networkID], references: [id], onDelete: Restrict)
   networkID Int?
   Programs  Program[]
-  Owner     User?     @relation(fields: [ownerId], references: [id])
+  Owner     User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId   Int?
 }
 
@@ -57,8 +57,8 @@ model Program {
   createdAt  DateTime  @default(now())
   key        String    @unique
   name       String    @unique
-  Contract   Contract? @relation(fields: [contractId], references: [id])
+  Contract   Contract? @relation(fields: [contractId], references: [id], onDelete: Restrict)
   contractId String?
-  Owner      User?     @relation(fields: [ownerId], references: [id])
+  Owner      User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId    Int?
 }

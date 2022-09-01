@@ -107,7 +107,7 @@ export default async function handle(req, res) {
       const item = await prisma[object].findFirst({
         where: {
           id: IDConverter(object, id) as string,
-          User: {
+          Owner: {
             email: session.user.email,
           },
         },
@@ -118,7 +118,7 @@ export default async function handle(req, res) {
         },
         data: {
           ...req.body,
-          User: {
+          Owner: {
             connectOrCreate: {
               create: {
                 email: session.user.email,
