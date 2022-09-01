@@ -10,7 +10,10 @@ export default function SimulateCard({
 }) {
   const contract = useWeb3Action(web3.web3, (_web3) => {
     if (ABIData)
-      return new _web3.eth.Contract(JSON.parse(ABIData["abi"]), address);
+      return new _web3.eth.Contract(
+        JSON.parse(ABIData["abi"]),
+        String(address).toLowerCase().trim()
+      );
     return false;
   });
 
@@ -20,7 +23,17 @@ export default function SimulateCard({
     e.preventDefault();
     const inputList = command.inputs.map((_, i) => `inp_${command.name}_${i}`);
     const inputValues = inputList.map((iL) => e.target[iL].value);
-    await contract.transact(web3.currentAccount, command, [...inputValues]);
+    if (command.stateMutability === "payable") {
+      const amountToSend = e.target["amountToSend"].value;
+      await contract.transact(
+        web3.currentAccount,
+        command,
+        [...inputValues],
+        amountToSend
+      );
+    } else {
+      await contract.transact(web3.currentAccount, command, [...inputValues]);
+    }
   }
 
   useEffect(() => {
@@ -51,6 +64,15 @@ export default function SimulateCard({
               </div>
             );
           })}
+          {command.stateMutability === "payable" && (
+            <div className="flex gap-2">
+              <p>
+                <span className="mr-1 text-gray-400">Ether</span>
+                Ether To Send
+              </p>
+              <input name={`amountToSend`} className="border flex-1" />
+            </div>
+          )}
         </div>
         <div className="flex-1 flex flex-col">
           <button className="border bg-blue-600 text-white">Call</button>

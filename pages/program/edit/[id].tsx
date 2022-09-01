@@ -71,7 +71,6 @@ const Page = (props) => {
     <main className="my-4 py-8">
       <p className="text-2xl">Edit Program</p>
       <div className="flex gap-2">
-        ot
         <div className="flex-[3] flex flex-col ">
           <form
             className="flex-[3] flex flex-col gap-2 my-2"
@@ -79,7 +78,7 @@ const Page = (props) => {
               e.preventDefault();
               const name = e.target["name"].value;
               const key = e.target["key"].value;
-              const contract = e.target["Contract"].value;
+              const contract = e.target["contract"].value;
               const contractData = updateContract(name, key, contract);
               try {
                 const resp = await fetch(`/api/db/program/${id}`, {
