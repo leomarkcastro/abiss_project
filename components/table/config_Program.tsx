@@ -33,7 +33,9 @@ export const programColumns = [
     header: () => <span className="hidden md:block">Created At</span>,
   }),
   columnHelper.accessor("Contract.name", {
-    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    cell: (info) => (
+      <p className="hidden md:block">{shortenify(info.getValue())}</p>
+    ),
     header: () => <span className="hidden md:block">Contract Linked</span>,
   }),
   columnHelper.accessor("Owner.name", {

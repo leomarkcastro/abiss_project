@@ -33,7 +33,9 @@ export const contractColumns = [
     header: () => <span className="hidden md:block">Created At</span>,
   }),
   columnHelper.accessor("Abi.name", {
-    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    cell: (info) => (
+      <p className="hidden md:block">{shortenify(info.getValue())}</p>
+    ),
     header: () => <span className="hidden md:block">ABI Source</span>,
   }),
   columnHelper.accessor("Owner.name", {

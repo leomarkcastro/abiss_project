@@ -35,7 +35,7 @@ export function Table({
 
   return (
     <div className="p-2">
-      <table className="table table-fixed w-full">
+      <table className="table table-auto w-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
