@@ -127,7 +127,11 @@ const Page = (props) => {
               onChange={(e) => setContract(e.target.value)}
             >
               {contractList.map((cl, ci) => {
-                return <option value={cl.id}>{cl.name}</option>;
+                return (
+                  <option key={ci} value={cl.id}>
+                    {cl.name}
+                  </option>
+                );
               })}
             </select>
             <button>Save</button>

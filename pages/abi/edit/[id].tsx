@@ -118,7 +118,10 @@ const Page = (props) => {
                 {commandList
                   .filter((command) => command.type === "function")
                   .map((command) => (
-                    <div className="border shadow-md flex-1 flex flex-col gap-1 p-1">
+                    <div
+                      key={`${command.name}`}
+                      className="border shadow-md flex-1 flex flex-col gap-1 p-1"
+                    >
                       <div className="flex items-center gap-3">
                         <p className="text-2xl">{command.name}</p>
                         <p>{command.stateMutability}</p>
@@ -130,7 +133,10 @@ const Page = (props) => {
                           </p>
                           <div>
                             {command.inputs.map((input) => (
-                              <div className="flex items-center gap-3 ml-6 text-sm">
+                              <div
+                                key={`${command.name}_${input.name}`}
+                                className="flex items-center gap-3 ml-6 text-sm"
+                              >
                                 <p className="text-green-600">{input.type}</p>
                                 <p>{input.name}</p>
                               </div>
@@ -145,7 +151,10 @@ const Page = (props) => {
                           </p>
                           <div>
                             {command.outputs.map((output) => (
-                              <div className="flex items-center gap-3 ml-6 text-sm">
+                              <div
+                                key={`${command.name}_${output.name}`}
+                                className="flex items-center gap-3 ml-6 text-sm"
+                              >
                                 <p className="text-green-600">{output.type}</p>
                                 <p>{output.name}</p>
                               </div>
@@ -161,7 +170,10 @@ const Page = (props) => {
                 {commandList
                   .filter((command) => command.type === "event")
                   .map((command) => (
-                    <div className="border shadow-md flex-1 flex flex-col gap-1 p-1">
+                    <div
+                      key={`${command.name}`}
+                      className="border shadow-md flex-1 flex flex-col gap-1 p-1"
+                    >
                       <div className="flex items-center gap-3">
                         <p className="text-2xl">{command.name}</p>
                         <p>{command.stateMutability}</p>
@@ -173,7 +185,10 @@ const Page = (props) => {
                           </p>
                           <div>
                             {command.inputs.map((input) => (
-                              <div className="flex items-center gap-3 ml-6 text-sm">
+                              <div
+                                key={`${command.name}_${input.name}`}
+                                className="flex items-center gap-3 ml-6 text-sm"
+                              >
                                 <p className="text-green-600">{input.type}</p>
                                 <p>{input.name}</p>
                               </div>

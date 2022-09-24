@@ -90,12 +90,20 @@ const Page = (props) => {
             />
             <select className="border p-2" placeholder="ABI" name="abi">
               {abiList.map((al, ai) => {
-                return <option value={al.id}>{al.name}</option>;
+                return (
+                  <option key={`abi_${ai}`} value={al.id}>
+                    {al.name}
+                  </option>
+                );
               })}
             </select>
             <select className="border p-2" placeholder="Network" name="network">
               {networkList.map((nl, ni) => {
-                return <option value={nl.id}>{nl.name}</option>;
+                return (
+                  <option key={`network_${ni}`} value={nl.id}>
+                    {nl.name}
+                  </option>
+                );
               })}
             </select>
             <button>Save</button>

@@ -135,7 +135,11 @@ const Page = (props) => {
               onChange={(e) => setAbi(e.target.value)}
             >
               {abiList.map((al, ai) => {
-                return <option value={al.id}>{al.name}</option>;
+                return (
+                  <option key={`opt_${al.name}`} value={al.id}>
+                    {al.name}
+                  </option>
+                );
               })}
             </select>
             <select

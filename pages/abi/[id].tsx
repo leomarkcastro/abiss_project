@@ -94,7 +94,7 @@ const Page = (props) => {
           <div className="p-4">
             {ABIData["Contracts"]?.map((con, ci) => {
               return (
-                <Link href={`/contract/${con.id}`}>
+                <Link key={`contract-${ci}`} href={`/contract/${con.id}`}>
                   <a>
                     <div className={`con_${con.id}`}>
                       <p className="text-blue-600">
