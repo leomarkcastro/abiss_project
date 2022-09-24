@@ -46,16 +46,17 @@ function Page() {
       <div className="flex-[6] p-4">
         <h2 className="text-3xl">Programs</h2>
         <p className="text-xs">
-          On your application, especially if you're using web3.js, ethers.js or
-          any other web3 integration module, you'll have to supply information
-          about your smart contract such as it's address, it's network and it's
-          ABI. And often, you'll have to supply the same information to
-          different application/servers in order for them to be in sync at all
-          times without the hassle of redeploying every of your application when
-          a new smart contract is deployed. Through this page, you can create an
-          API route where it points you to a smart contract and all of your
-          services will point to this one API so you are now sure that all of
-          them uses the same data at all times.
+          On your application, especially if you&APOS;re using web3.js,
+          ethers.js or any other web3 integration module, you&APOS;ll have to
+          supply information about your smart contract such as it&APOS;s
+          address, it&APOS;s network and it&APOS;s ABI. And often, you&APOS;ll
+          have to supply the same information to different application/servers
+          in order for them to be in sync at all times without the hassle of
+          redeploying every of your application when a new smart contract is
+          deployed. Through this page, you can create an API route where it
+          points you to a smart contract and all of your services will point to
+          this one API so you are now sure that all of them uses the same data
+          at all times.
         </p>
         <hr className="my-2" />
         <h3 className="font-semibold">

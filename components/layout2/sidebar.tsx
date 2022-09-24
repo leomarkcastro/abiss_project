@@ -22,6 +22,19 @@ const links = [
       },
     ],
   },
+  {
+    group_name: "External",
+    links: [
+      {
+        name: "Pocketbase",
+        url: "https://pb01.leocastro.com/_/",
+      },
+      {
+        name: "Multiplayer Block",
+        url: "https://colyseus01.leocastro.com/games/03",
+      },
+    ],
+  },
 ];
 
 export default function Sidebar() {

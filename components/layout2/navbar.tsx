@@ -34,7 +34,7 @@ export default function Navbar() {
               .map((item, index) => {
                 if (index === 0) {
                   return (
-                    <p className="flex gap-2">
+                    <p key="nav_home" className="flex gap-2">
                       <Link href="/">
                         <a>
                           <p className="text-blue-600">Home</p>
@@ -45,7 +45,7 @@ export default function Navbar() {
                   );
                 } else {
                   return (
-                    <p className="flex gap-2">
+                    <p key={`nav_${item}`} className="flex gap-2">
                       <Link
                         href={router.asPath
                           .split("/")
