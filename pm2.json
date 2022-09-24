@@ -3,11 +3,11 @@
     {
       "name": "xabi-cluster",
       "script": "run.js",
-      "instances": 3,
+      "instances": 2,
       "exec_mode": "cluster_mode",
-      "cwd": "/root/xabi/abiss_project",
+      "cwd": "/root/xabi_site",
       "env": {
-        "PORT": 3000,
+        "PORT": 4343,
         "NODE_ENV": "production"
       }
     }
