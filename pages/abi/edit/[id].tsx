@@ -5,13 +5,15 @@ import Link from "next/link";
 import { Prisma } from "@prisma/client";
 import { isJsonString, loadDetectedCommands } from "@/lib/utils";
 import { useRouter } from "next/router";
+import ToggleSwitch from "@/components/components/ToggleSwitch";
 
 // export const getServerSideProps: GetServerSideProps = async () => {};
 
-const updateABIPrisma = (abi: string, name: string, userId: number) => {
+const updateABIPrisma = (abi: string, name: string, isPublic: boolean) => {
   return Prisma.validator<Prisma.AbiUpdateInput>()({
     abi,
     name,
+    public: isPublic,
     // User: { connect: { id: userId } },
   });
 };
@@ -34,17 +36,19 @@ const Page = (props) => {
     const abiData = await abi.json();
     setName(abiData.name);
     setAbi(abiData.abi);
+    setIsPublic(abiData.public);
   }
 
   const [name, setName] = React.useState("");
   const [abi, setAbi] = React.useState("");
+  const [isPublic, setIsPublic] = React.useState(false);
   const [commandList, setCommandList] = React.useState([]);
 
   async function updateABI(e) {
     e.preventDefault();
     if (isJsonString(abi)) {
       //createABI();
-      const body = updateABIPrisma(abi, name, 0);
+      const body = updateABIPrisma(abi, name, isPublic);
       try {
         const resp = await fetch(`/api/db/abi/${id}`, {
           method: "PUT",
@@ -59,7 +63,7 @@ const Page = (props) => {
   }
 
   return (
-    <main className="my-4 py-8">
+    <main className="">
       <p className="text-2xl">Create New ABI</p>
       <div className="flex gap-2">
         <div className="flex-[3] flex flex-col ">

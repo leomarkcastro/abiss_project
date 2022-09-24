@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,4 +33,9 @@ pre {
 *::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+}
+
+body {
+  font-family: "Jost", sans-serif;
+  font-size: 16px;
 }

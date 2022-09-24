@@ -1,17 +1,17 @@
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import "@/styles/globals.css";
-import Layout from "@/components/layout/main";
 import { RouteGuard } from "@/components/auth/routeGuard";
+import Layout from "@/components/layout2/main";
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   return (
     <SessionProvider session={session}>
-      <Layout>
-        <RouteGuard>
+      <RouteGuard>
+        <Layout>
           <Component {...pageProps} />
-        </RouteGuard>
-      </Layout>
+        </Layout>
+      </RouteGuard>
     </SessionProvider>
   );
 };

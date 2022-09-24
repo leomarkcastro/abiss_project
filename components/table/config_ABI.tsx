@@ -33,11 +33,17 @@ export const abiColumns = [
     cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
     header: () => <span className="hidden md:block">Author</span>,
   }),
+  columnHelper.accessor("public", {
+    cell: (info) => (
+      <p className="hidden md:block">{info.getValue() ? "Yes" : "No"}</p>
+    ),
+    header: () => <span className="hidden md:block">Public</span>,
+  }),
   columnHelper.accessor("id", {
     cell: (info) => (
-      <div className="flex gap-4 text-sm">
+      <div className="flex gap-4 text-sm bg-gray-600 text-white justify-center">
         <Link href={`/abi/${info.getValue()}`}>
-          <a className="hover:text-blue-500">View</a>
+          <a className="hover:text-blue-100">View</a>
         </Link>
         <button
           onClick={() => {
@@ -46,9 +52,9 @@ export const abiColumns = [
             );
             // alert("Successfully copied to clipboard");
           }}
-          className="hover:text-blue-500"
+          className="hover:text-blue-100"
         >
-          Copy Data Link
+          Link
         </button>
       </div>
     ),

@@ -60,13 +60,18 @@ const Page = (props) => {
   const web3 = useWeb3(true);
 
   return (
-    <main className="my-4 py-8">
+    <main className="">
       <div className="flex flex-col items-stretch">
         <div className="flex-1 flex flex-col gap-1 my-2 border shadow-lg p-4 rounded-md relative">
           <div className="absolute right-6 top-6 text-right">
             <Link href={`/contract/edit/${contractData["id"]}`}>
               <a>
                 <p className="text-blue-600">Edit</p>
+              </a>
+            </Link>
+            <Link href={`/contract/publish/${contractData["id"]}`}>
+              <a>
+                <p className="text-green-600">Publish</p>
               </a>
             </Link>
             <Link href={`/contract/delete/${contractData["id"]}`}>
@@ -89,6 +94,9 @@ const Page = (props) => {
             <strong>Network:</strong> {contractData["Network"]?.name} (Chain ID
             -&gt;
             {" " + contractData["Network"]?.id})
+          </p>
+          <p>
+            <strong>Published:</strong> {contractData["public"] ? "Yes" : "No"}
           </p>
           <p className="max-h-[20vh] overflow-auto bg-gray-100 p-3">
             {ABIData["abi"]}

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-const ALLOWED_ROUTES = ["/auth/signin"];
+const ALLOWED_ROUTES = ["/auth/signin", "/"];
 
 export function RouteGuard({ children }) {
   const { data: session, status } = useSession();

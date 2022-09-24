@@ -46,7 +46,7 @@ const Page = (props) => {
   }, []);
 
   return (
-    <main className="my-4 py-8">
+    <main className="">
       <p className="text-2xl">Create New Contract</p>
       <div className="flex gap-2">
         <div className="flex-[3] flex flex-col ">
@@ -72,7 +72,7 @@ const Page = (props) => {
                 });
                 const data = await resp.json();
                 console.log(data);
-                router.replace("/");
+                router.replace("/contract");
               } catch (err) {
                 console.log(err);
               }

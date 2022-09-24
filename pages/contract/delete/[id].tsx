@@ -37,14 +37,14 @@ const Page = (props) => {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
-      router.replace(`/`);
+      router.replace(`/contract`);
     } catch (err) {
       console.log(err);
     }
   }
 
   return (
-    <main className="my-4 py-8">
+    <main className="">
       <p className="text-2xl">Delete ABI?</p>
       <div className="">
         <p>Name: {name}</p>

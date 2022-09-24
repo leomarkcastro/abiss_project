@@ -30,6 +30,7 @@ model Abi {
   Contracts Contract[]
   Owner     User?      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId   Int?
+  public    Boolean    @default(false)
 }
 
 model Network {
@@ -50,6 +51,7 @@ model Contract {
   Programs  Program[]
   Owner     User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId   Int?
+  public    Boolean   @default(false)
 }
 
 model Program {
@@ -61,4 +63,5 @@ model Program {
   contractId String?
   Owner      User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId    Int?
+  public     Boolean   @default(false)
 }

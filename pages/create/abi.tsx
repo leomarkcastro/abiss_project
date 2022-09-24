@@ -43,7 +43,7 @@ const Page = (props) => {
           body: JSON.stringify(body),
         });
         const data = await resp.json();
-        router.replace(`/`);
+        router.replace(`/abi`);
       } catch (err) {
         console.log(err);
       }
@@ -51,7 +51,7 @@ const Page = (props) => {
   }
 
   return (
-    <main className="my-4 py-8">
+    <main className="">
       <p className="text-2xl">Create New ABI</p>
       <div className="flex gap-2">
         <div className="flex-[3] flex flex-col ">

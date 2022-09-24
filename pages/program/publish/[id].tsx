@@ -22,7 +22,7 @@ const Page = (props) => {
   }, [router.isReady]);
 
   async function abiData(id) {
-    const abi = await fetch(`/api/db/abi/${id}`);
+    const abi = await fetch(`/api/db/program/${id}`);
     const abiData = await abi.json();
     setName(abiData.name);
     setAbi(abiData.abi);
@@ -31,14 +31,18 @@ const Page = (props) => {
   const [name, setName] = React.useState("");
   const [abi, setAbi] = React.useState("");
 
-  async function deleteABI(e) {
+  async function publishABI(e, isPublish) {
     e.preventDefault();
     try {
-      const resp = await fetch(`/api/db/abi/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+      const body = Prisma.validator<Prisma.ContractUpdateInput>()({
+        public: isPublish,
       });
-      router.replace(`/abi`);
+      const resp = await fetch(`/api/db/program/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      router.replace(`/program/${id}`);
     } catch (err) {
       console.log(err);
     }
@@ -46,13 +50,22 @@ const Page = (props) => {
 
   return (
     <main className="">
-      <p className="text-2xl">Delete ABI?</p>
+      <p className="text-2xl">Publish Contract?</p>
       <div className="">
         <p>Name: {name}</p>
       </div>
       <div className="mt-4">
-        <button className="bg-red-500 text-white p-1" onClick={deleteABI}>
-          Delete
+        <button
+          className="bg-blue-500 text-white p-1 mr-4"
+          onClick={(e) => publishABI(e, true)}
+        >
+          Publish
+        </button>
+        <button
+          className="bg-emerald-400 text-white p-1"
+          onClick={(e) => publishABI(e, false)}
+        >
+          Hide as Draft
         </button>
       </div>
     </main>

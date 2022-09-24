@@ -76,8 +76,23 @@ export default async function handle(req, res) {
         });
         res.json(result);
       } else {
-        const result = await prisma[object].findMany({
+        const _q = {
           ...JSON.parse(query),
+        };
+        const DONT_FILTER = ["network"];
+        if (DONT_FILTER.indexOf(object) === -1) {
+          _q.where = _q.where || {};
+          _q.where.OR = [
+            { public: true },
+            {
+              Owner: {
+                email: session.user.email,
+              },
+            },
+          ];
+        }
+        const result = await prisma[object].findMany({
+          ..._q,
         });
         res.json(result);
       }
@@ -106,7 +121,7 @@ export default async function handle(req, res) {
     case "PUT": {
       const item = await prisma[object].findFirst({
         where: {
-          id: IDConverter(object, id) as string,
+          id: IDConverter(object, id),
           Owner: {
             email: session.user.email,
           },
@@ -135,9 +150,17 @@ export default async function handle(req, res) {
       break;
     }
     case "DELETE": {
-      const result = await prisma[object].delete({
+      const item = await prisma[object].findFirst({
         where: {
           id: IDConverter(object, id),
+          Owner: {
+            email: session.user.email,
+          },
+        },
+      });
+      const result = await prisma[object].delete({
+        where: {
+          id: item.id,
         },
       });
       res.json(result);

@@ -35,11 +35,11 @@ export function Table({
 
   return (
     <div className="p-2">
-      <table className="table table-auto w-full">
+      <table className="table table-fixed w-full">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
-              className="border-b border-blue-500 text-blue-500 text-center"
+              className="border-b border-blue-500 text-blue-500 text-center text-sm"
               key={headerGroup.id}
             >
               {headerGroup.headers.map((header) => (
@@ -62,7 +62,7 @@ export function Table({
               key={row.id}
             >
               {row.getVisibleCells().map((cell) => (
-                <td className="p-2" key={cell.id}>
+                <td className="p-2 text-sm" key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
