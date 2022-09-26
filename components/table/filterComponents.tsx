@@ -72,6 +72,7 @@ export function SelectColumnFilter({
     preFilteredRows.forEach((row) => {
       options.add(row.values[id]);
     });
+    // @ts-ignore
     return [...options.values()];
   }, [id, preFilteredRows]);
 
