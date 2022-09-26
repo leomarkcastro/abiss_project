@@ -47,6 +47,11 @@ export const contractColumns = [
       <p className="hidden md:block">{info.getValue() ? "Yes" : "No"}</p>
     ),
     header: () => <span className="hidden md:block">Public</span>,
+    filterFn: (rows, id, filterValue) => {
+      console.log(rows, id, filterValue);
+      console.log(String(rows.original.public) == filterValue);
+      return String(rows.original.public) == filterValue;
+    },
   }),
   columnHelper.accessor("id", {
     cell: (info) => (
@@ -68,5 +73,6 @@ export const contractColumns = [
       </div>
     ),
     header: () => <span className="text-center"></span>,
+    enableColumnFilter: false,
   }),
 ];

@@ -1,5 +1,5 @@
 import LayoutABI from "@/components/layout_abi1/main";
-import { Table } from "@/components/table/BasicLayout";
+import { Table } from "@/components/table/FilteredLayout";
 import { contractColumns } from "@/components/table/config_Contracts";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";

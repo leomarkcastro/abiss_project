@@ -25,6 +25,7 @@ export const programColumns = [
   columnHelper.accessor("id", {
     cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
     header: () => <span className="hidden md:block">ID</span>,
+    enableColumnFilter: false,
   }),
   columnHelper.accessor("createdAt", {
     cell: (info) => (
@@ -47,6 +48,11 @@ export const programColumns = [
       <p className="hidden md:block">{info.getValue() ? "Yes" : "No"}</p>
     ),
     header: () => <span className="hidden md:block">Public</span>,
+    filterFn: (rows, id, filterValue) => {
+      console.log(rows, id, filterValue);
+      console.log(String(rows.original.public) == filterValue);
+      return String(rows.original.public) == filterValue;
+    },
   }),
   columnHelper.accessor("id", {
     cell: (info) => (
@@ -70,5 +76,6 @@ export const programColumns = [
       </div>
     ),
     header: () => <span className="text-center"></span>,
+    enableColumnFilter: false,
   }),
 ];

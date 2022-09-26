@@ -31,6 +31,7 @@ export function Table({
         pageSize: 10,
       },
     },
+    filterFns: undefined,
   });
 
   return (
