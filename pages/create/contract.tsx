@@ -72,7 +72,11 @@ const Page = (props) => {
                 });
                 const data = await resp.json();
                 console.log(data);
-                router.replace("/contract");
+                if (data.error) {
+                  alert(data.error);
+                } else {
+                  router.replace("/contract");
+                }
               } catch (err) {
                 console.log(err);
               }

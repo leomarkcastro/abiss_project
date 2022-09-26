@@ -55,7 +55,11 @@ const Page = (props) => {
                 });
                 const data = await resp.json();
                 console.log(data);
-                router.replace("/program");
+                if (data.error) {
+                  alert(data.error);
+                } else {
+                  router.replace("/program");
+                }
               } catch (err) {
                 console.log(err);
               }

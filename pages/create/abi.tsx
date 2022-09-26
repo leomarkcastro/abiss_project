@@ -43,7 +43,11 @@ const Page = (props) => {
           body: JSON.stringify(body),
         });
         const data = await resp.json();
-        router.replace(`/abi`);
+        if (data.error) {
+          alert(data.error);
+        } else {
+          router.replace(`/abi`);
+        }
       } catch (err) {
         console.log(err);
       }

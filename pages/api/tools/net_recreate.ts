@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 
-export default async (req, res) => {
+export default async function net_recreate(req, res) {
   const networkToCreate = [
     {
       id: 1,
@@ -39,4 +39,4 @@ export default async (req, res) => {
     } catch (err) {}
   }
   res.send("Done");
-};
+}
