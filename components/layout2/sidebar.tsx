@@ -8,18 +8,18 @@ const links = [
         name: "ABI Management",
         url: "/abi",
       },
-      {
-        name: "Public Envs",
-        url: "https://docs.soliditylang.org/en/v0.8.9/",
-      },
-      {
-        name: "Hot Solidity Test",
-        url: "https://docs.soliditylang.org/en/v0.8.9/",
-      },
-      {
-        name: "Host Files",
-        url: "https://docs.soliditylang.org/en/v0.8.9/",
-      },
+      // {
+      //   name: "Public Envs",
+      //   url: "https://docs.soliditylang.org/en/v0.8.9/",
+      // },
+      // {
+      //   name: "Hot Solidity Test",
+      //   url: "https://docs.soliditylang.org/en/v0.8.9/",
+      // },
+      // {
+      //   name: "Host Files",
+      //   url: "https://docs.soliditylang.org/en/v0.8.9/",
+      // },
     ],
   },
   {
