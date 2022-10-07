@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id() @default(autoincrement())
+  createdAt DateTime   @default(now())
+  email     String     @unique
+  name      String
+  password  String?
+  type      Int?
+  Abis      Abi[]
+  Contracts Contract[]
+  Programs  Program[]
+}
+
+model Abi {
+  id        Int        @id() @default(autoincrement())
+  createdAt DateTime   @default(now())
+  name      String
+  abi       String
+  Contracts Contract[]
+  Owner     User?      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId   Int?
+  public    Boolean    @default(false)
+}
+
+model Network {
+  id        Int        @id
+  createdAt DateTime   @default(now())
+  name      String     @unique
+  Contracts Contract[]
+}
+
+model Contract {
+  id        String    @id
+  createdAt DateTime  @default(now())
+  name      String    @unique
+  Abi       Abi?      @relation(fields: [abiID], references: [id], onDelete: Restrict)
+  abiID     Int?
+  Network   Network?  @relation(fields: [networkID], references: [id], onDelete: Restrict)
+  networkID Int?
+  Programs  Program[]
+  Owner     User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId   Int?
+  public    Boolean   @default(false)
+}
+
+model Program {
+  id         Int       @id() @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  key        String    @unique
+  name       String    @unique
+  Contract   Contract? @relation(fields: [contractId], references: [id], onDelete: Restrict)
+  contractId String?
+  Owner      User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  ownerId    Int?
+  public     Boolean   @default(false)
+}

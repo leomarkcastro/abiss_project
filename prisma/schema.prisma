@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id        Int        @id() @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
   email     String     @unique
   name      String
@@ -23,13 +20,13 @@ model User {
 }
 
 model Abi {
-  id        Int        @id() @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
   name      String
   abi       String
-  Contracts Contract[]
-  Owner     User?      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId   Int?
+  Owner     User?      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  Contracts Contract[]
   public    Boolean    @default(false)
 }
 
@@ -44,24 +41,273 @@ model Contract {
   id        String    @id
   createdAt DateTime  @default(now())
   name      String    @unique
-  Abi       Abi?      @relation(fields: [abiID], references: [id], onDelete: Restrict)
   abiID     Int?
-  Network   Network?  @relation(fields: [networkID], references: [id], onDelete: Restrict)
   networkID Int?
-  Programs  Program[]
-  Owner     User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId   Int?
+  Abi       Abi?      @relation(fields: [abiID], references: [id], onDelete: Restrict)
+  Network   Network?  @relation(fields: [networkID], references: [id], onDelete: Restrict)
+  Owner     User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+  Programs  Program[]
   public    Boolean   @default(false)
 }
 
 model Program {
-  id         Int       @id() @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   createdAt  DateTime  @default(now())
   key        String    @unique
   name       String    @unique
-  Contract   Contract? @relation(fields: [contractId], references: [id], onDelete: Restrict)
   contractId String?
-  Owner      User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   ownerId    Int?
+  Contract   Contract? @relation(fields: [contractId], references: [id], onDelete: Restrict)
+  Owner      User?     @relation(fields: [ownerId], references: [id], onDelete: Restrict)
   public     Boolean   @default(false)
+}
+
+model admins {
+  id             BigInt  @id @default(autoincrement())
+  wallet_address String? @unique(map: "idx_admins_wallet_address")
+}
+
+model coin_flip_games {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @db.Timestamptz(6)
+  updated_at       DateTime? @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  game_id          String?
+  wallet_address   String?
+  transaction_hash String?
+  score            BigInt?
+  lives            BigInt?
+  bet_tokens       BigInt?
+  rewards          BigInt?
+  game_status      String?
+  overall_result   String?
+  date             DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "idx_coin_flip_games_deleted_at")
+}
+
+model coin_flip_rounds {
+  id              BigInt    @id @default(autoincrement())
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+  deleted_at      DateTime? @db.Timestamptz(6)
+  game_id         String?
+  round_number    BigInt?
+  move            String?
+  coinflip_result String?
+  round_result    String?
+  date            DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "idx_coin_flip_rounds_deleted_at")
+}
+
+model featured_players {
+  id             BigInt    @id @default(autoincrement())
+  created_at     DateTime? @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+  wallet_address String?
+  matchid        String?
+
+  @@index([deleted_at], map: "idx_featured_players_deleted_at")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model games {
+  game_id     BigInt? @default(autoincrement())
+  name        String? @unique(map: "idx_games_name")
+  image       String?
+  description String?
+  screenshots String?
+  status      String?
+
+  @@ignore
+}
+
+model maintenances {
+  id             BigInt    @id @default(autoincrement())
+  created_at     DateTime? @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+  wallet_address String?
+  maintenance    Boolean?
+
+  @@index([deleted_at], map: "idx_maintenances_deleted_at")
+}
+
+model match_rounds {
+  id            BigInt    @id @default(autoincrement())
+  created_at    DateTime? @db.Timestamptz(6)
+  updated_at    DateTime? @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+  matchid       String?
+  round         BigInt?
+  player1move   String?
+  player2move   String?
+  round_status  String?
+  round_winner  String?
+  player1_ready String?
+  player2_ready String?
+
+  @@index([deleted_at], map: "idx_match_rounds_deleted_at")
+}
+
+model mine_token_matrices {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  move       BigInt?
+  multiplier Decimal?  @db.Decimal
+  x_rewards  Decimal?  @db.Decimal
+
+  @@index([deleted_at], map: "idx_mine_token_matrices_deleted_at")
+}
+
+model mine_token_moves {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  session_id String?
+  grid_tile  BigInt?
+  mined      String?
+  x_rewards  Decimal?  @db.Decimal
+  date_time  DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "idx_mine_token_moves_deleted_at")
+}
+
+model mine_token_sessions {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @db.Timestamptz(6)
+  updated_at       DateTime? @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  session_id       String?   @unique(map: "idx_mine_token_sessions_session_id")
+  grid_value       String?
+  wallet_address   String?
+  transaction_hash String?
+  bet_amount       Decimal?  @db.Decimal
+  mined_token      BigInt?   @default(0)
+  x_rewards        Decimal?  @default(0.000000) @db.Decimal
+  ended_at         DateTime? @db.Timestamptz(6)
+  result           String?
+  status           String?
+
+  @@index([deleted_at], map: "idx_mine_token_sessions_deleted_at")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model moves {
+  move String?
+
+  @@ignore
+}
+
+model rewards {
+  id             BigInt    @id @default(autoincrement())
+  created_at     DateTime? @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+  wallet_address String?   @unique(map: "idx_rewards_wallet_address")
+  rewards        Decimal?  @db.Decimal
+
+  @@index([deleted_at], map: "idx_rewards_deleted_at")
+}
+
+model rewards_histories {
+  id             BigInt    @id @default(autoincrement())
+  created_at     DateTime? @db.Timestamptz(6)
+  updated_at     DateTime? @db.Timestamptz(6)
+  deleted_at     DateTime? @db.Timestamptz(6)
+  wallet_address String?
+  game           String?
+  date           DateTime? @db.Timestamptz(6)
+  reward         Decimal?  @db.Decimal
+
+  @@index([deleted_at], map: "idx_rewards_histories_deleted_at")
+}
+
+model rock_paper_scissors_matches {
+  id                      BigInt    @id @default(autoincrement())
+  created_at              DateTime? @db.Timestamptz(6)
+  updated_at              DateTime? @db.Timestamptz(6)
+  deleted_at              DateTime? @db.Timestamptz(6)
+  matchid                 String?
+  player1_address         String?
+  player2_address         String?
+  player1_transactionhash String?
+  player2_transactionhash String?
+  player1_bet             Decimal?  @db.Decimal
+  player2_bet             Decimal?  @db.Decimal
+  player1_score           BigInt?
+  player2_score           BigInt?
+  current_round           BigInt?
+  player1_start           DateTime? @db.Timestamptz(6)
+  player2_start           DateTime? @db.Timestamptz(6)
+  player1_lastupdate      DateTime? @db.Timestamptz(6)
+  player2_lastupdate      DateTime? @db.Timestamptz(6)
+  game_status             String?
+  winner                  String?
+
+  @@index([deleted_at], map: "idx_rock_paper_scissors_matches_deleted_at")
+}
+
+model rps_computer_round_statuses {
+  id            BigInt    @id @default(autoincrement())
+  created_at    DateTime? @db.Timestamptz(6)
+  updated_at    DateTime? @db.Timestamptz(6)
+  deleted_at    DateTime? @db.Timestamptz(6)
+  matchid       String?
+  current_round BigInt?
+  round_status  String?
+  ready         String?
+  computer_move String?
+  round_winner  String?
+
+  @@index([deleted_at], map: "idx_rps_computer_round_statuses_deleted_at")
+}
+
+model save_transaction_hashes {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @db.Timestamptz(6)
+  updated_at       DateTime? @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  game_id          String?
+  game_name        String?
+  wallet_address   String?
+  transaction_hash String?   @unique(map: "idx_save_transaction_hashes_transaction_hash")
+
+  @@index([deleted_at], map: "idx_save_transaction_hashes_deleted_at")
+}
+
+model transactions {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @db.Timestamptz(6)
+  updated_at       DateTime? @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
+  transaction_hash String?
+  wallet_address   String?
+  bet_token        Decimal?  @db.Decimal
+  finish           Boolean?
+  error            Boolean?
+  trans_date       DateTime? @db.Timestamptz(6)
+
+  @@index([deleted_at], map: "idx_transactions_deleted_at")
+}
+
+model users {
+  id              BigInt    @id @default(autoincrement())
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+  deleted_at      DateTime? @db.Timestamptz(6)
+  full_name       String?
+  user_name       String?
+  email_address   String?
+  wallet_address  String?   @unique(map: "idx_users_wallet_address")
+  profile_pic_url String?
+  featured        Boolean?
+
+  @@index([deleted_at], map: "idx_users_deleted_at")
 }
