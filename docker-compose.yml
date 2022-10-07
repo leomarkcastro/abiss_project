@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - data-volume:/data/db
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+  server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: abiss_server
+    restart: on-failure
+    container_name: abiss_server
+    command: yarn start
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    env_file: ./.env
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/leo01-db01
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  data-volume:
+    driver: local
+  node_modules:
+  web-root:
+    driver: local
