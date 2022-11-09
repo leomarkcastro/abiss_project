@@ -67,5 +67,6 @@ export function copyToClipboard(str) {
 }
 
 export function roundTo(num, places) {
+  /* @ts-ignore */
   return +(Math.round(num + "e+" + places) + "e-" + places);
 }
