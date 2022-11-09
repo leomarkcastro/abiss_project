@@ -1,3 +1,4 @@
+import CryptoJS from "crypto-js";
 import prisma from "@/lib/prisma";
 import Joi from "joi";
 
@@ -5,7 +6,9 @@ export default async function handle(req, res) {
   const cuid = req.query.cuid;
   const method = req.method;
 
-  const body = req.body;
+  const key = req.query.key || false;
+
+  // const body = req.body;
 
   res.setHeader("Cache-Control", "s-maxage=180");
 
@@ -18,7 +21,24 @@ export default async function handle(req, res) {
         },
       });
 
-      res.status(200).json(secret);
+      let decrypted;
+      let correct;
+      let error;
+      if (secret && key) {
+        try {
+          decrypted = CryptoJS.AES.decrypt(secret.value, key).toString(
+            CryptoJS.enc.Utf8
+          );
+          const hash = CryptoJS.SHA256(decrypted).toString();
+          correct = hash === secret.signature;
+        } catch (err) {
+          error = err.message;
+        }
+      }
+
+      res
+        .status(200)
+        .json({ ...secret, decryptedValue: decrypted, correct, error });
       break;
     default:
       res.status(404).send({ error: "Not found" });
