@@ -65,3 +65,7 @@ export function copyToClipboard(str) {
   /* Copy the text inside the text field */
   navigator.clipboard.writeText(str);
 }
+
+export function roundTo(num, places) {
+  return +(Math.round(num + "e+" + places) + "e-" + places);
+}

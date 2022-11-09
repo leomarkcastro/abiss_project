@@ -48,14 +48,18 @@ export const contractColumns = [
     ),
     header: () => <span className="hidden md:block">Public</span>,
     filterFn: (rows, id, filterValue) => {
-      console.log(rows, id, filterValue);
-      console.log(String(rows.original.public) == filterValue);
+      // console.log(rows, id, filterValue);
+      // console.log(String(rows.original.public) == filterValue);
       return String(rows.original.public) == filterValue;
     },
   }),
+  columnHelper.accessor("Network.name", {
+    cell: (info) => <p className="hidden md:block">{info.getValue()}</p>,
+    header: () => <span className="hidden md:block">Network</span>,
+  }),
   columnHelper.accessor("id", {
     cell: (info) => (
-      <div className="flex gap-4 text-sm bg-gray-600 text-white justify-center">
+      <div className="flex justify-center gap-4 text-sm text-white bg-gray-600">
         <Link href={`/contract/${info.getValue()}`}>
           <a className="hover:text-blue-100">View</a>
         </Link>

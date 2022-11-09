@@ -20,12 +20,12 @@ export default function FunctionCard({
   const web3User = useWeb3(true);
 
   return (
-    <div className="flex-1 flex flex-col gap-2 my-2 border shadow-lg p-4 rounded-md">
+    <div className="flex flex-col flex-1 gap-2 p-4 my-2 border rounded-md shadow-lg">
       <p className="text-2xl font-bold">Functions</p>
-      <div className="flex flex-col md:flex-row gap-2">
+      <div className="flex flex-col gap-2 md:flex-row">
         <div className="flex-1 flex flex-col gap-1 max-h-[70vh] overflow-auto mt-9">
           <input
-            className="border p-1"
+            className="sticky top-0 p-1 border"
             placeholder="Search A Function"
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -35,7 +35,7 @@ export default function FunctionCard({
             .map((command) => (
               <div
                 key={`comm_${command.name}`}
-                className="flex flex-col gap-1 p-2 bg-white hover:bg-gray-200 cursor-pointer border-b-2"
+                className="flex flex-col gap-1 p-2 bg-white border-b-2 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   connected &&
                     setSelectedCommandList([
@@ -44,9 +44,9 @@ export default function FunctionCard({
                     ]);
                 }}
               >
-                <p className="text-xl flex">
+                <p className="flex text-xl">
                   {command.name}
-                  <span className="text-sm ml-auto">
+                  <span className="ml-auto text-sm">
                     {command.stateMutability}
                   </span>
                 </p>
@@ -55,22 +55,39 @@ export default function FunctionCard({
         </div>
         <div className="flex-[2] flex flex-col gap-1 max-h-[70vh] overflow-auto bg-gray-100">
           {networkId !== null && web3User.currentNetwork !== networkId ? (
-            <div className="flex flex-col w-full h-full items-center justify-center gap-1 p-2">
-              <p className="text-lg flex">
+            <div className="flex flex-col items-center justify-center w-full h-full gap-1 p-2">
+              <p className="flex text-lg">
                 Please connect to the correct network (Chain ID: {networkId})
               </p>
             </div>
           ) : connected ? (
             <>
-              <p className="p-1 pl-0">
-                Connected to Contract:{" "}
-                <span className="text-blue-500">{contractAddress}</span>
-              </p>
+              <div className="sticky top-0 p-2 bg-gray-100">
+                <p className="p-1 pl-0">
+                  Connected to Contract:{" "}
+                  <a
+                    href={`https://blockscan.com/address/${contractAddress}`}
+                    className="text-blue-500"
+                  >
+                    {contractAddress}
+                  </a>
+                </p>
+                <p>
+                  Your Wallet Address:
+                  <a
+                    href={`https://blockscan.com/address/${web3User.currentAccount}`}
+                    className="text-blue-500"
+                  >
+                    {web3User.currentAccount}
+                  </a>
+                </p>
+              </div>
               {selectedCommandList
                 .filter((command) => command.type === "function")
                 .map((command, ic) => (
                   <SimulateCard
                     key={`selcomm_${command.nonce}`}
+                    id={ic}
                     web3={web3}
                     ABIData={ABIData}
                     address={contractAddress}
@@ -83,7 +100,7 @@ export default function FunctionCard({
                 ))}
             </>
           ) : (
-            <div className="h-full w-full flex flex-col justify-center items-center gap-2">
+            <div className="flex flex-col items-center justify-center w-full h-full gap-2">
               <p className="text-center">
                 <p className="mr-2">Connect to an Address: </p>
                 <input
@@ -93,7 +110,7 @@ export default function FunctionCard({
                 />
               </p>
               <button
-                className="p-1 bg-blue-600 text-white"
+                className="p-1 text-white bg-blue-600"
                 onClick={setConnected.bind(this, true)}
               >
                 Connect

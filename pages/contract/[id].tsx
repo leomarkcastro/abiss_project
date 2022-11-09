@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { formatDate, loadDetectedCommands, uuid } from "@/lib/utils";
+import {
+  copyToClipboard,
+  formatDate,
+  loadDetectedCommands,
+  uuid,
+} from "@/lib/utils";
 
 import useWeb3 from "@/lib/web3/hooks/useWeb3";
 import useWeb3Action from "@/lib/web3/hooks/useWeb3Action";
@@ -62,8 +67,8 @@ const Page = (props) => {
   return (
     <main className="">
       <div className="flex flex-col items-stretch">
-        <div className="flex-1 flex flex-col gap-1 my-2 border shadow-lg p-4 rounded-md relative">
-          <div className="absolute right-6 top-6 text-right">
+        <div className="relative flex flex-col flex-1 gap-1 p-4 my-2 border rounded-md shadow-lg">
+          <div className="absolute text-right right-6 top-6">
             <Link href={`/contract/edit/${contractData["id"]}`}>
               <a>
                 <p className="text-blue-600">Edit</p>
@@ -101,6 +106,14 @@ const Page = (props) => {
           <p className="max-h-[20vh] overflow-auto bg-gray-100 p-3">
             {ABIData["abi"]}
           </p>
+          <button
+            className="p-1 text-left bg-gray-300 w-fit"
+            onClick={() => {
+              copyToClipboard(ABIData["abi"]);
+            }}
+          >
+            Copy ABI
+          </button>
         </div>
         <FunctionCard
           ABIData={ABIData}

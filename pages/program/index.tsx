@@ -10,7 +10,11 @@ import { useState, useEffect } from "react";
 const querySelectProgram = (range = [0, 500]) => {
   const query: Prisma.ProgramFindManyArgs = {
     include: {
-      Contract: true,
+      Contract: {
+        include: {
+          Network: true,
+        },
+      },
       Owner: true,
     },
     skip: range[0],

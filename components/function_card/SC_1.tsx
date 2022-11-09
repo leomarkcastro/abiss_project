@@ -1,12 +1,25 @@
 import useWeb3Action from "@/lib/web3/hooks/useWeb3Action";
 import { useState, useEffect } from "react";
 
+function InputWrapper({ type, name }) {
+  if (["bool"].includes(type)) {
+    return (
+      <select name={name}>
+        <option value={1}>true</option>
+        <option value={0}>false</option>
+      </select>
+    );
+  }
+  return <input name={name} className="flex-1 border" />;
+}
+
 export default function SimulateCard({
   command,
   web3,
   ABIData,
   address,
   deleteFx,
+  id,
 }) {
   const contract = useWeb3Action(web3.web3, (_web3) => {
     if (ABIData)
@@ -17,12 +30,25 @@ export default function SimulateCard({
     return false;
   });
 
-  const [output, setOutput] = useState();
+  const [output, setOutput] = useState<string | undefined>();
 
   async function onSubmitFx(e) {
     e.preventDefault();
-    const inputList = command.inputs.map((_, i) => `inp_${command.name}_${i}`);
-    const inputValues = inputList.map((iL) => e.target[iL].value);
+    setOutput("Loading...");
+    const inputList = command.inputs.map(
+      (_, i) => `inp_${id}_${command.name}_${i}`
+    );
+    const inputValues = inputList.map((iL) => {
+      const inpValue = e.target[iL].value;
+
+      if (/^\[.*\]$/.test(inpValue)) {
+        return JSON.parse(inpValue);
+      }
+      return e.target[iL].value;
+    });
+
+    console.log(inputValues);
+
     if (command.stateMutability === "payable") {
       const amountToSend = e.target["amountToSend"].value;
       await contract.transact(
@@ -41,11 +67,11 @@ export default function SimulateCard({
   }, [contract.transactionDone, contract.response]);
   return (
     <div className="flex flex-col gap-1 p-3 border border-gray-500 shadow-md h-fit">
-      <p className="text-xl flex">
+      <p className="flex text-xl">
         {command.name}
-        <span className="text-sm ml-auto">{command.stateMutability}</span>
+        <span className="ml-auto text-sm">{command.stateMutability}</span>
       </p>
-      <form className="flex flex-col md:flex-row gap-1" onSubmit={onSubmitFx}>
+      <form className="flex flex-col gap-1 md:flex-row" onSubmit={onSubmitFx}>
         <div className="flex-[2]">
           {command.inputs.map((input_data, i) => {
             return (
@@ -57,9 +83,9 @@ export default function SimulateCard({
                   <span className="mr-1 text-gray-400">{input_data.type}</span>
                   {input_data.name}
                 </p>
-                <input
-                  name={`inp_${command.name}_${i}`}
-                  className="border flex-1"
+                <InputWrapper
+                  name={`inp_${id}_${command.name}_${i}`}
+                  type={input_data.type}
                 />
               </div>
             );
@@ -70,14 +96,14 @@ export default function SimulateCard({
                 <span className="mr-1 text-gray-400">Ether</span>
                 Ether To Send
               </p>
-              <input name={`amountToSend`} className="border flex-1" />
+              <input name={`amountToSend`} className="flex-1 border" />
             </div>
           )}
         </div>
-        <div className="flex-1 flex flex-col">
-          <button className="border bg-blue-600 text-white">Call</button>
+        <div className="flex flex-col flex-1">
+          <button className="text-white bg-blue-600 border">Call</button>
           <button
-            className="border bg-red-600 text-white"
+            className="text-white bg-red-600 border"
             onClick={(e) => {
               e.preventDefault();
               deleteFx();
@@ -88,7 +114,7 @@ export default function SimulateCard({
         </div>
       </form>
       <div className="max-h-[15vh] overflow-auto">
-        <p className="text-center break-all overflow-auto">
+        <p className="overflow-auto text-center break-all">
           {JSON.stringify(output)}
         </p>
       </div>
